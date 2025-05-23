@@ -11,8 +11,5 @@ public class HomeScreen {
         UserInterface ui = new UserInterface();
         //ui.run();
         Menu menu = new Menu(1);
-        for(Object list : menu.m){
-            System.out.println(list);
-        }
     }
 }
