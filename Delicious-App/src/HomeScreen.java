@@ -1,10 +1,18 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
+
 public class HomeScreen {
-
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         UserInterface ui = new UserInterface();
-        ui.run();
+        //ui.run();
+        Menu menu = new Menu(1);
+        for(Object list : menu.m){
+            System.out.println(list);
+        }
     }
 }
