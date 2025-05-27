@@ -6,8 +6,7 @@ public class UserInterface {
     Scanner in = new Scanner(System.in);
     String userInput;
     public double runningTotal = 0.0;
-    ArrayList<IMenuItem> cart = new ArrayList<>();
-    public Order order = new Order(cart);
+    ArrayList<Object> cart = new ArrayList<>();
 
     void run(){
         String userInput = "";
@@ -15,18 +14,39 @@ public class UserInterface {
             try {
                 /**ORDERING INTERFACE*/
                 System.out.print("""
-                        1) Press 1 to order a sandwich
-                        2) View Cart
+                        1) New Order
                         0) Press 0 to exit
-                        User Input:""");
+                        Your Input:""");
                 userInput = in.nextLine();
-                switch (userInput){
-                    case "1":
-                        orderASandwich();
-                        break;
-                    case "2":
-                        System.out.println(cart + "\n$" + runningTotal);
-                }
+                String orderInput = "";
+               if(userInput.equals("1")){
+                   while(!orderInput .equals("0")){
+                       System.out.print("""
+                                        1) Order a Sandwich
+                                        2) Add Drink
+                                        3) Add Chips
+                                        4) Checkout
+                                        5)View Cart
+                                        0) Cancel Order
+                                        Your Input: """);
+                       orderInput = in.nextLine();
+                       switch (orderInput){
+                           case "0":
+                               cart.clear();
+                               runningTotal = 0.0;
+                               System.out.println("*** Order Cancelled ***");
+                               break;
+                           case "1":
+                               orderASandwich();
+                               break;
+                           case "2":
+                               orderDrink();
+                               break;
+                           case "5":
+                               System.out.println(cart + String.format("Total:$%.2f",runningTotal));
+                       }
+                   }
+               }
             }
             catch (Exception error){
                 System.out.println("Error: " + error + "Please try again.");
@@ -89,8 +109,10 @@ public class UserInterface {
                             input++;
                         }
                     case "complete":
-                        Sandwich sandwich = new Sandwich(size,bread,meats,cheeses,regularT,sauces,runningTotal);
-                        order.cart.add(sandwich);
+                        System.out.print("Do you want the sandwich Toasted?(Y/N):");
+                        boolean isToasted = in.nextLine().equalsIgnoreCase("Y") ? true : false;
+                        Sandwich sandwich = new Sandwich(size,bread,meats,cheeses,regularT,sauces,runningTotal, isToasted);
+                        cart.add(sandwich);
                         System.out.println(cart);
                         System.out.println(String.format("Total:$%.2f", sandwich.getTotal()));
                         input++;
@@ -105,6 +127,15 @@ public class UserInterface {
             }
         }
     }
+    private void orderDrink() throws FileNotFoundException {
+        try {
+            addMenuItem();
+        }
+        catch (Exception error){
+            System.out.println(error);
+        }
+
+    }
     private boolean addPremiumToppings(ArrayList<Topping> userToppings, Menu menu, int listNum, Scanner in, String type, int size, double[] priceList){
         System.out.println(String.format("%s\nSelect a %s type (enter the number next to the item):",type.toUpperCase(), type));
         ArrayList<Topping> temp = (ArrayList<Topping>) menu.m.get(listNum);
@@ -118,6 +149,7 @@ public class UserInterface {
         Boolean extraMeat = in.nextLine().equalsIgnoreCase("Y") ? true : false;
         if(extraMeat) {
             runningTotal += priceList[size] + topping.getPrice();
+            cart.add(String.format("Extra %s:$%.2f",type,priceList[size]));
         }
         else{runningTotal+= topping.getPrice();
         }
@@ -138,8 +170,19 @@ public class UserInterface {
         Boolean addMore = in.nextLine().equalsIgnoreCase("Y") ? true : false;
         return addMore || temp.isEmpty();
     }
-    private double updatePrice(double cost){
-        return cost;
+    private boolean addMenuItem() throws FileNotFoundException {
+        System.out.print("What size drink? [1]Small [2] Medium [3]Large:");
+        int size = in.nextInt() - 1;
+        in.nextLine();
+        Menu menu = new Menu(size);
+        menu.display(menu.drinks);
+        System.out.printf("Select a drink from the list: " );
+        Drink drink = (Drink) menu.drinks.get(in.nextInt()-1);
+        in.nextLine();
+        cart.add(drink);
+        runningTotal+= drink.price;
+        System.out.print("Would you like to order another drink?: ");
+        return in.nextLine().equalsIgnoreCase("Y")? addMenuItem():false;
     }
 
     }

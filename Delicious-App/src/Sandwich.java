@@ -16,7 +16,8 @@ ArrayList<Topping> cheeseToppings;
 ArrayList<Topping> regularToppings;
 ArrayList<Topping> sauces;
 double total;
-Sandwich(int size,Bread bread, ArrayList<Topping> meatToppings,ArrayList<Topping> cheeseToppings, ArrayList<Topping> regularToppings, ArrayList<Topping> sauces, double total){
+boolean isToasted;
+Sandwich(int size,Bread bread, ArrayList<Topping> meatToppings,ArrayList<Topping> cheeseToppings, ArrayList<Topping> regularToppings, ArrayList<Topping> sauces, double total ,boolean isToasted){
     this.size = size;
     this.bread = bread;
     this.meatToppings = meatToppings;
@@ -24,6 +25,7 @@ Sandwich(int size,Bread bread, ArrayList<Topping> meatToppings,ArrayList<Topping
     this.regularToppings = regularToppings;
     this.sauces = sauces;
     this.total = total;
+    this.isToasted = isToasted;
 }
 
 

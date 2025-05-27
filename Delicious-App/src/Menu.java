@@ -15,10 +15,11 @@ public class Menu <E> {
     protected ArrayList<Topping> sauces = new ArrayList<>();
     protected ArrayList<Topping> sides = new ArrayList<>();
     GenerateDynamicMenu generate = new GenerateDynamicMenu();
+    ArrayList<IMenuItem> drinks = new ArrayList<>();
     ArrayList<ArrayList<Topping>> m = new ArrayList<>();
     Menu(int size) throws FileNotFoundException {
         this.size = size;
-        generate.generate(size,breadList,meatList,cheeseList, regularToppingList,sauces, sides);
+        generate.generate(size,breadList,meatList,cheeseList, regularToppingList,sauces, sides,drinks);
         m.add(breadList);
         m.add(meatList);
         m.add(cheeseList);

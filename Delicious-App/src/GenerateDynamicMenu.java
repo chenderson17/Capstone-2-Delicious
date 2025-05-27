@@ -7,17 +7,20 @@ import java.util.Scanner;
 public class GenerateDynamicMenu {
     File f = new File("food.csv");
     Scanner reader;
-    public void generate(int size, ArrayList<Topping> breadList, ArrayList<Topping> meatList, ArrayList<Topping> cheeseList, ArrayList<Topping> regularToppingList, ArrayList<Topping> sauces, ArrayList<Topping> sides) throws FileNotFoundException {
+    public void generate(int size, ArrayList<Topping> breadList, ArrayList<Topping> meatList, ArrayList<Topping> cheeseList, ArrayList<Topping> regularToppingList, ArrayList<Topping> sauces, ArrayList<Topping> sides, ArrayList<IMenuItem> drinks) throws FileNotFoundException {
         try {
             Scanner reader = new Scanner(f);
             while (reader.hasNextLine()) {
                 String line = reader.nextLine();
                 Scanner lineReader = new Scanner(line);
                 if (line.contains("Bread")) {
+
                     lineReader.next();
                     while (lineReader.hasNext()) {
                         breadList.add(new Bread(lineReader.next(),Prices.breadPrices[size]));
+
                     }
+
                 }
                 else if(line.contains("Meat")){
                     lineReader.next();
@@ -49,11 +52,24 @@ public class GenerateDynamicMenu {
                             sides.add(new RegularTopping(lineReader.next(),0.00));
                         }
                     }
+                else if(line.contains("Soda")){
+                    lineReader.next();
+                    while(lineReader.hasNext()){
+                        drinks.add(new Drink(lineReader.next(), Prices.drinkPrices[size]));
+                    }
+                }
                 }
             }
         catch (Exception error){
             System.out.println(error);
         }
+        }
+        //new topping line read
+        private void add(Scanner lineReader, ArrayList<Topping> list, Topping t){
+            lineReader.next();
+            while(lineReader.hasNext()){
+                list.add(t);
+            }
         }
 
     }
