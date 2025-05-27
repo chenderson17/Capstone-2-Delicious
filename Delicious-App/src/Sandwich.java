@@ -11,17 +11,21 @@ public class Sandwich {
      */
 int size;
 Bread bread;
-ArrayList<Meat> meatToppings;
-ArrayList<Cheese> cheeseToppings;
-ArrayList<RegularTopping> regularToppings;
+ArrayList<Topping> meatToppings;
+ArrayList<Topping> cheeseToppings;
+ArrayList<Topping> regularToppings;
 double total;
-Sandwich(int size,Bread bread, Meat meat, ArrayList<Meat> meatToppings, ArrayList<RegularTopping> regularToppings, ArrayList<Cheese> cheeseToppings, double total){
+Sandwich(int size,Bread bread, Meat meat, ArrayList<Topping> meatToppings,ArrayList<Topping> cheeseToppings, ArrayList<Topping> regularToppings, double total){
     this.size = size;
     this.bread = bread;
     this.meatToppings = meatToppings;
     this.cheeseToppings = cheeseToppings;
     this.regularToppings = regularToppings;
     this.total = total;
+}
+public double calculateTotal(){
+
+    return bread.getPrice();
 }
 
 }
