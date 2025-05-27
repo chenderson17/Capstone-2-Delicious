@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class UserInterface {
     Scanner in = new Scanner(System.in);
     String userInput;
-
+    public double runningTotal = 0.0;
 
     void run(){
         String userInput = "";
@@ -34,11 +34,12 @@ public class UserInterface {
         Bread bread = null;
         ArrayList<Topping> meats = new ArrayList<>();
         ArrayList<Topping> cheeses = new ArrayList<>();
-        String[] pages = {"s","b","m","c","r"};
+        ArrayList<Topping> regularT = new ArrayList<>();
+        ArrayList<Topping> sauces = new ArrayList<>();
+        String[] pages = {"s","b","m","c","r","sauce","complete"};
         Menu menu = null;
-        double runningTotal = 0.00;
         //
-        while(true) {
+        while(input < pages.length) {
             try {
                 switch (pages[input]){
                     case "s":
@@ -61,33 +62,42 @@ public class UserInterface {
                         input++;
                         break;
                     case "m":
-                        if(!addPremiumToppings(meats,menu, 1,in,"Meat",runningTotal,size,Prices.extraMeat,input)){
-                           input++;
+                        if(!addPremiumToppings(meats,menu, 1,in,"Meat",size,Prices.extraMeat)){
+                            System.out.println(meats);
+                            input++;
                         };
                         break;
                     case "c":
-                        if(!addPremiumToppings(cheeses, menu, 2, in, "Cheese",runningTotal, size, Prices.extraCheese,input)) {
+                        if(!addPremiumToppings(cheeses, menu, 2, in, "Cheese", size, Prices.extraCheese)) {
+                            System.out.println(cheeses);
                             input++;
                         }
                         break;
                     case "r":
-                        System.out.println("Add regular toppings");
-                        String pause = in.nextLine();
+                        if(!addRegularToppings(menu, regularT,3,"Regular Toppings",in)){
+                            input++;
+                    }
                         break;
+                    case "sauce":
+                        if(!addRegularToppings(menu,sauces,4,"Sauces",in)){
+                            input++;
+                        }
+                    case "complete":
+                        Sandwich sandwich = new Sandwich(size,bread,meats,cheeses,regularT,sauces,runningTotal);
+                        System.out.println(String.format("Total:$%.2f", sandwich.getTotal()));
+                        input++;
                     default:
-                        System.out.println("Sorry, I didn't understand that");
+                        System.out.println("Thank you.");
                         break;
                 }
-                System.out.println(String.format("Running Total %.2f", runningTotal));
-                System.out.println(meats);
             }
             catch (Exception error){
                 System.out.println("Error");
             }
         }
     }
-    private boolean addPremiumToppings(ArrayList<Topping> userToppings, Menu menu, int listNum, Scanner in, String type, double runningTotal, int size, double[] priceList, int input){
-        System.out.println(String.format("%s\n Select a %s type (enter the number next to the meat):",type.toUpperCase(), type));
+    private boolean addPremiumToppings(ArrayList<Topping> userToppings, Menu menu, int listNum, Scanner in, String type, int size, double[] priceList){
+        System.out.println(String.format("%s\nSelect a %s type (enter the number next to the item):",type.toUpperCase(), type));
         ArrayList<Topping> temp = (ArrayList<Topping>) menu.m.get(listNum);
         menu.display(temp);
         System.out.print("Your input: ");
@@ -97,10 +107,30 @@ public class UserInterface {
         in.nextLine();
         System.out.print(String.format("Extra %s? (Y/N): ", type));;
         Boolean extraMeat = in.nextLine().equalsIgnoreCase("Y") ? true : false;
-        runningTotal+= extraMeat? priceList[size] + topping.getPrice() : topping.getPrice();
+        if(extraMeat) {
+            runningTotal += priceList[size] + topping.getPrice();
+        }
+        else{runningTotal+= topping.getPrice();
+        }
         System.out.print(String.format("Add more %s? (Y/N): ",type));
         Boolean addMore = in.nextLine().equalsIgnoreCase("Y") ? true : false;
-        return addMore;
+        return addMore || temp.isEmpty();
+    }
+    private boolean addRegularToppings(Menu menu, ArrayList<Topping> userToppings,int listNum,String type,Scanner in){
+        System.out.println(String.format("%s\nSelect a %s type (enter the number next to the item):",type.toUpperCase(), type));
+        ArrayList<Topping> temp = (ArrayList<Topping>) menu.m.get(listNum);
+        menu.display(temp);
+        System.out.print("Your input: ");
+        Topping topping = (Topping) ((ArrayList<?>) menu.m.get(listNum)).get(in.nextInt() - 1);
+        userToppings.add(topping);
+        temp.remove(topping);
+        in.nextLine();
+        System.out.print(String.format("Add more %s? (Y/N): ",type));
+        Boolean addMore = in.nextLine().equalsIgnoreCase("Y") ? true : false;
+        return addMore || temp.isEmpty();
+    }
+    private double updatePrice(double cost){
+        return cost;
     }
 
     }
