@@ -6,20 +6,26 @@ public class UserInterface {
     Scanner in = new Scanner(System.in);
     String userInput;
     public double runningTotal = 0.0;
+    ArrayList<IMenuItem> cart = new ArrayList<>();
+    public Order order = new Order(cart);
 
     void run(){
         String userInput = "";
         while(!userInput.equalsIgnoreCase( "0")){
             try {
+                /**ORDERING INTERFACE*/
                 System.out.print("""
-                        1) Press 1 to order
+                        1) Press 1 to order a sandwich
+                        2) View Cart
                         0) Press 0 to exit
                         User Input:""");
                 userInput = in.nextLine();
                 switch (userInput){
                     case "1":
-                        orderASandwich(in);
+                        orderASandwich();
                         break;
+                    case "2":
+                        System.out.println(cart + "\n$" + runningTotal);
                 }
             }
             catch (Exception error){
@@ -27,7 +33,7 @@ public class UserInterface {
             }
         }
     }
-    public void orderASandwich(Scanner in){
+    public void orderASandwich(){
 
         int input = 0;
         int size = 0;
@@ -84,8 +90,11 @@ public class UserInterface {
                         }
                     case "complete":
                         Sandwich sandwich = new Sandwich(size,bread,meats,cheeses,regularT,sauces,runningTotal);
+                        order.cart.add(sandwich);
+                        System.out.println(cart);
                         System.out.println(String.format("Total:$%.2f", sandwich.getTotal()));
                         input++;
+                        break;
                     default:
                         System.out.println("Thank you.");
                         break;

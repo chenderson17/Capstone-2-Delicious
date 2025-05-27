@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Sandwich {
+public class Sandwich implements IMenuItem {
     /**
      * Size
      * Bread
@@ -31,4 +31,9 @@ Sandwich(int size,Bread bread, ArrayList<Topping> meatToppings,ArrayList<Topping
     public double getTotal(){
     return total;
     }
+    @Override
+    public String toString(){
+    return "Sandwich: " + bread + "\n" + meatToppings + "\n" + cheeseToppings+ "\n"+ regularToppings + "\n" + sauces;
+    }
+
 }
