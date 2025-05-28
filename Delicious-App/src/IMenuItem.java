@@ -1,4 +1,4 @@
-public abstract class IMenuItem {
+public  class IMenuItem {
 String name;
 double price;
 IMenuItem(String name, double price){

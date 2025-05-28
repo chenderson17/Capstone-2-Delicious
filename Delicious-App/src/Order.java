@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Order {
     protected List<Object> cart = new ArrayList<>();
@@ -22,5 +21,8 @@ public class Order {
     }
     public double getRunningTotal(){
         return runningTotal;
+    }
+    public void addToTotal(Double price){
+        runningTotal+= price;
     }
 }

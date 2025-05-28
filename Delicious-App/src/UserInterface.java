@@ -9,8 +9,7 @@ import java.util.UUID;
 public class UserInterface {
     Scanner in = new Scanner(System.in);
     String userInput;
-    public double runningTotal = 0.0;
-    //ArrayList<Object> cart = new ArrayList<>();
+    //public double runningTotal = 0.0;
     void run(){
         String userInput = "";
         while(!userInput.equalsIgnoreCase( "0")){
@@ -23,8 +22,8 @@ public class UserInterface {
                 userInput = in.nextLine();
                 String orderInput = "";
                if(userInput.equals("1")){
+                   Order order = new Order();
                    while(!orderInput .equals("0")){
-                       Order order = new Order();
                        System.out.print("""
                                         1) Order a Sandwich
                                         2) Add Drink
@@ -38,12 +37,10 @@ public class UserInterface {
                        switch (orderInput){
                            case "0":
                                order.emptyCart();
-                               runningTotal = 0.0;
-                               order.emptyCart();
                                System.out.println("*** Order Cancelled ***");
                                break;
                            case "1":
-                               order.addToCart(orderASandwich());
+                               orderASandwich(order);
                                break;
                            case "2":
                                addDrink(order);
@@ -63,7 +60,6 @@ public class UserInterface {
                                checkout(order);
                                orderInput = "0";
                                order.emptyCart();
-                               runningTotal = 0.0;
                                break;
                        }
                    }
@@ -74,7 +70,7 @@ public class UserInterface {
             }
         }
     }
-    public Sandwich orderASandwich(){
+    public void orderASandwich(Order order){
         int input = 0;
         int size = 0;
         Bread bread = null;
@@ -106,17 +102,18 @@ public class UserInterface {
                         System.out.print("Your Input: ");
                         bread = (Bread) menu.getBreadList().get(in.nextInt() -1);
                         in.nextLine();
-                        runningTotal+= bread.getPrice();
+                        //runningTotal+= bread.getPrice();
+                        order.addToTotal(bread.getPrice());
                         input++;
                         break;
                     case "m":
-                        if(!addPremiumToppings(meats,menu, 1,in,"Meat",size,Prices.extraMeat)){
+                        if(!addPremiumToppings(meats,menu, 1,in,"Meat",size,Prices.extraMeat,order)){
                             System.out.println(meats);
                             input++;
                         };
                         break;
                     case "c":
-                        if(!addPremiumToppings(cheeses, menu, 2, in, "Cheese", size, Prices.extraCheese)) {
+                        if(!addPremiumToppings(cheeses, menu, 2, in, "Cheese", size, Prices.extraCheese,order)) {
                             System.out.println(cheeses);
                             input++;
                         }
@@ -139,7 +136,7 @@ public class UserInterface {
                     case "complete":
                         System.out.print("Do you want the sandwich Toasted?(Y/N):");
                         boolean isToasted = in.nextLine().equalsIgnoreCase("Y") ? true : false;
-                        sandwich = new Sandwich(size,runningTotal,bread,meats,cheeses,regularT,sides,sauces, isToasted);
+                        sandwich = new Sandwich(size,0.0,bread,meats,cheeses,regularT,sides,sauces, isToasted);
                         input++;
                         break;
                     default:
@@ -151,9 +148,9 @@ public class UserInterface {
                 System.out.println("Error");
             }
         }
-        return sandwich;
+        order.addToCart(sandwich);
     }
-    private boolean addPremiumToppings(ArrayList<Topping> userToppings, Menu menu, int listNum, Scanner in, String type, int size, double[] priceList){
+    private boolean addPremiumToppings(ArrayList<Topping> userToppings, Menu menu, int listNum, Scanner in, String type, int size, double[] priceList, Order order){
         System.out.println(String.format("%s\nSelect a %s type (enter the number next to the item):",type.toUpperCase(), type));
         ArrayList<Topping> temp = (ArrayList<Topping>) menu.m.get(listNum);
         menu.display(temp);
@@ -165,10 +162,10 @@ public class UserInterface {
         System.out.print(String.format("Extra %s? (Y/N): ", type));;
         Boolean extraTopping = in.nextLine().equalsIgnoreCase("Y") ? true : false;
         if(extraTopping) {
-            runningTotal += priceList[size] + topping.getPrice();
-            //order.addToCart(String.format("Extra %s:$%.2f",topping.name,priceList[size]));
+            order.addToTotal(priceList[size] + topping.getPrice());
+            order.addToCart(new IMenuItem(String.format("Extra %s:",topping.name),priceList[size]));
         }
-        else{runningTotal+= topping.getPrice();
+        else{order.addToTotal(topping.getPrice());
         }
         System.out.print(String.format("Add more %s? (Y/N): ",type));
         Boolean addMore = in.nextLine().equalsIgnoreCase("Y") ? true : false;
@@ -198,7 +195,6 @@ public class UserInterface {
         Drink drink = (Drink) menu.drinks.get(in.nextInt()-1);
         in.nextLine();
         order.addToCart(drink);
-        runningTotal+= drink.price;
         System.out.print("Would you like to order another drink?: ");
         return in.nextLine().equalsIgnoreCase("Y")? addDrink(order):false;
     }
@@ -212,7 +208,6 @@ public class UserInterface {
             Chip chip = (Chip) menu.chips.get(in.nextInt() - 1);
             order.addToCart(chip);
             in.nextLine();
-            runningTotal+= chip.price;
             System.out.print("Would you like to add more chips?(Y/N):");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
@@ -239,7 +234,7 @@ public class UserInterface {
                 for(Object item : order.cart){
                     writer.write(String.valueOf(item) +"\n");
                 }
-                writer.write(String.format("Total:%.2f",runningTotal));
+                writer.write(String.format("Total:%.2f",order.getRunningTotal()));
                 writer.close();
 
             } catch (Exception e) {
