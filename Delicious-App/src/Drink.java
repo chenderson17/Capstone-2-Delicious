@@ -1,12 +1,9 @@
-public class Drink implements IMenuItem {
+public class Drink extends IMenuItem {
     //1.Size
     //2.Flavor
     //3.Price
-    String name;
-    double price;
     Drink(String name, double price){
-        this.name = name;
-        this.price = price;
+        super(name,price);
     }
     @Override
     public String toString(){

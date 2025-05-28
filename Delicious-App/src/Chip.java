@@ -1,4 +1,4 @@
-public class Chip extends  Drink implements IMenuItem {
+public class Chip extends  IMenuItem {
     Chip(String name, double price) {
         super(name, price);
     }

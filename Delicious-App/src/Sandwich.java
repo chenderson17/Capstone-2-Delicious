@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Sandwich implements IMenuItem {
+public class Sandwich extends IMenuItem {
     /**
      * Size
      * Bread
@@ -16,9 +16,9 @@ ArrayList<Topping> cheeseToppings;
 ArrayList<Topping> regularToppings;
 ArrayList<Topping> sauces;
 ArrayList<Topping> sides;
-double total;
 boolean isToasted;
-Sandwich(int size,Bread bread, ArrayList<Topping> meatToppings,ArrayList<Topping> cheeseToppings, ArrayList<Topping> regularToppings, ArrayList<Topping> sides,ArrayList<Topping> sauces, double total ,boolean isToasted){
+Sandwich(int size, double price, Bread bread, ArrayList<Topping> meatToppings,ArrayList<Topping> cheeseToppings, ArrayList<Topping> regularToppings, ArrayList<Topping> sides,ArrayList<Topping> sauces,boolean isToasted){
+    super("Sandwich",price);
     this.size = size;
     this.bread = bread;
     this.meatToppings = meatToppings;
@@ -26,15 +26,9 @@ Sandwich(int size,Bread bread, ArrayList<Topping> meatToppings,ArrayList<Topping
     this.regularToppings = regularToppings;
     this.sides = sides;
     this.sauces = sauces;
-    this.total = total;
     this.isToasted = isToasted;
 }
 
-
-
-    public double getTotal(){
-    return total;
-    }
     @Override
     public String toString(){
     return "Sandwich:\n " + bread + "\n" + meatToppings + "\n" + cheeseToppings+ "\n"+ regularToppings + "\n" + sauces + "\n" + sides;
