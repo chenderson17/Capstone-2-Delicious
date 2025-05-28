@@ -13,7 +13,7 @@ public class Menu <E> {
     protected ArrayList<Topping> cheeseList = new ArrayList<>();
     protected ArrayList<Topping> regularToppingList = new ArrayList<>();
     protected ArrayList<Topping> sauces = new ArrayList<>();
-    protected ArrayList<Topping> sides = new ArrayList<>();
+    ArrayList<Topping> sides = new ArrayList<>();
     ArrayList<IMenuItem> chips = new ArrayList<>();
     GenerateDynamicMenu generate = new GenerateDynamicMenu();
     ArrayList<IMenuItem> drinks = new ArrayList<>();
