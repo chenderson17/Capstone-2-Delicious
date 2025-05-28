@@ -1,7 +1,12 @@
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.UUID;
+
 public class UserInterface {
     Scanner in = new Scanner(System.in);
     String userInput;
@@ -25,7 +30,8 @@ public class UserInterface {
                                         2) Add Drink
                                         3) Add Chips
                                         4) Checkout
-                                        5)View Cart
+                                        5) View Cart
+                                        6) Checkout
                                         0) Cancel Order
                                         Your Input: """);
                        orderInput = in.nextLine();
@@ -51,6 +57,11 @@ public class UserInterface {
                                else {
                                    System.out.println(cart + String.format("Total:$%.2f", runningTotal));
                                }
+                               break;
+                           case "6":
+                               checkout();
+                               orderInput = "0";
+                               break;
                        }
                    }
                }
@@ -209,12 +220,39 @@ public class UserInterface {
             cart.add(chip);
             in.nextLine();
             runningTotal+= chip.price;
-            System.out.print("Would you like to add more chips?");
-            addMore = in.nextLine().equalsIgnoreCase("Y") ? true : false;
+            System.out.print("Would you like to add more chips?(Y/N)");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-        return addMore? addChips() : false;
+        return in.nextLine().equalsIgnoreCase("Y") ? addChips() : false;
+    }
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    private void checkout(){
+        /**
+         * • Checkout - display the order details and the price
+         * o Confirm - create the receipt file and go back to the home screen
+         * o Cancel - delete order and go back to the home screen
+         */
+        System.out.println("CHECKOUT");
+        System.out.println(cart);
+        System.out.println("Press Y to Confirm or Press enter to cancel");
+        String input = in.nextLine();
+        if(input.equalsIgnoreCase("Y")){
+            UUID uuid =  UUID.randomUUID();
+            try{
+                File file = new File(String.valueOf(uuid) + "-receipt.txt");
+                BufferedWriter writer = new BufferedWriter(new FileWriter(file,true));
+                writer.write("Receipt \n");
+                for(Object item : cart){
+                    writer.write(String.valueOf(item) +"\n");
+                }
+                writer.write(String.format("Total:%.2f",runningTotal));
+                writer.close();
+
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     }
