@@ -226,7 +226,7 @@ public class UserInterface {
         }
         return in.nextLine().equalsIgnoreCase("Y") ? addChips() : false;
     }
-    public static final String ANSI_PURPLE = "\u001B[35m";
+
     private void checkout(){
         /**
          * • Checkout - display the order details and the price
@@ -235,7 +235,7 @@ public class UserInterface {
          */
         System.out.println("CHECKOUT");
         System.out.println(cart);
-        System.out.println("Press Y to Confirm or Press enter to cancel");
+        System.out.print("Press Y to Confirm or Press enter to cancel:");
         String input = in.nextLine();
         if(input.equalsIgnoreCase("Y")){
             UUID uuid =  UUID.randomUUID();
