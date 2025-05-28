@@ -37,7 +37,7 @@ Sandwich(int size,Bread bread, ArrayList<Topping> meatToppings,ArrayList<Topping
     }
     @Override
     public String toString(){
-    return "Sandwich: " + bread + "\n" + meatToppings + "\n" + cheeseToppings+ "\n"+ regularToppings + "\n" + sauces + "\n" + sides;
+    return "Sandwich:\n " + bread + "\n" + meatToppings + "\n" + cheeseToppings+ "\n"+ regularToppings + "\n" + sauces + "\n" + sides;
     }
 
 }
