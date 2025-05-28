@@ -1,7 +1,0 @@
-Sandwich: White|$5.50
-[Steak|$1.00]
-[American|$0.75]
-[Lettuce|$0.00]
-[Mayo|$0.00]
-[Au-Jus|$0.00]
-Total:7.25
