@@ -61,6 +61,8 @@ public class UserInterface {
                            case "6":
                                checkout();
                                orderInput = "0";
+                               cart.clear();
+                               runningTotal = 0.0;
                                break;
                        }
                    }
@@ -220,7 +222,7 @@ public class UserInterface {
             cart.add(chip);
             in.nextLine();
             runningTotal+= chip.price;
-            System.out.print("Would you like to add more chips?(Y/N)");
+            System.out.print("Would you like to add more chips?(Y/N):");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -231,7 +233,7 @@ public class UserInterface {
         /**
          * • Checkout - display the order details and the price
          * o Confirm - create the receipt file and go back to the home screen
-         * o Cancel - delete order and go back to the home screen
+         * o Cancel - delete order and go back to the homescreen
          */
         System.out.println("CHECKOUT");
         System.out.println(cart);
@@ -254,6 +256,5 @@ public class UserInterface {
             }
         }
     }
-
-    }
+}
 
