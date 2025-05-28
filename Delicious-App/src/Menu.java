@@ -14,12 +14,13 @@ public class Menu <E> {
     protected ArrayList<Topping> regularToppingList = new ArrayList<>();
     protected ArrayList<Topping> sauces = new ArrayList<>();
     protected ArrayList<Topping> sides = new ArrayList<>();
+    ArrayList<IMenuItem> chips = new ArrayList<>();
     GenerateDynamicMenu generate = new GenerateDynamicMenu();
     ArrayList<IMenuItem> drinks = new ArrayList<>();
     ArrayList<ArrayList<Topping>> m = new ArrayList<>();
     Menu(int size) throws FileNotFoundException {
         this.size = size;
-        generate.generate(size,breadList,meatList,cheeseList, regularToppingList,sauces, sides,drinks);
+        generate.generate(size,breadList,meatList,cheeseList, regularToppingList,sauces, sides,drinks, chips);
         m.add(breadList);
         m.add(meatList);
         m.add(cheeseList);

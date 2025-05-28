@@ -7,7 +7,6 @@ public class UserInterface {
     String userInput;
     public double runningTotal = 0.0;
     ArrayList<Object> cart = new ArrayList<>();
-
     void run(){
         String userInput = "";
         while(!userInput.equalsIgnoreCase( "0")){
@@ -42,6 +41,9 @@ public class UserInterface {
                            case "2":
                                orderDrink();
                                break;
+                           case "3":
+                               addChips();
+                               break;
                            case "5":
                                System.out.println(cart + String.format("Total:$%.2f",runningTotal));
                        }
@@ -54,7 +56,6 @@ public class UserInterface {
         }
     }
     public void orderASandwich(){
-
         int input = 0;
         int size = 0;
         Bread bread = null;
@@ -129,7 +130,7 @@ public class UserInterface {
     }
     private void orderDrink() throws FileNotFoundException {
         try {
-            addMenuItem();
+            addDrink();
         }
         catch (Exception error){
             System.out.println(error);
@@ -170,7 +171,7 @@ public class UserInterface {
         Boolean addMore = in.nextLine().equalsIgnoreCase("Y") ? true : false;
         return addMore || temp.isEmpty();
     }
-    private boolean addMenuItem() throws FileNotFoundException {
+    private boolean addDrink() throws FileNotFoundException {
         System.out.print("What size drink? [1]Small [2] Medium [3]Large:");
         int size = in.nextInt() - 1;
         in.nextLine();
@@ -182,7 +183,11 @@ public class UserInterface {
         cart.add(drink);
         runningTotal+= drink.price;
         System.out.print("Would you like to order another drink?: ");
-        return in.nextLine().equalsIgnoreCase("Y")? addMenuItem():false;
+        return in.nextLine().equalsIgnoreCase("Y")? addDrink():false;
+    }
+    private void addChips() throws FileNotFoundException {
+        Menu menu = new Menu(1);
+        System.out.println(menu.chips);
     }
 
     }
