@@ -45,7 +45,12 @@ public class UserInterface {
                                addChips();
                                break;
                            case "5":
-                               System.out.println(cart + String.format("Total:$%.2f",runningTotal));
+                               if(cart.isEmpty()){
+                                   System.out.println("Cart is empty");
+                               }
+                               else {
+                                   System.out.println(cart + String.format("Total:$%.2f", runningTotal));
+                               }
                        }
                    }
                }
@@ -185,9 +190,23 @@ public class UserInterface {
         System.out.print("Would you like to order another drink?: ");
         return in.nextLine().equalsIgnoreCase("Y")? addDrink():false;
     }
-    private void addChips() throws FileNotFoundException {
-        Menu menu = new Menu(1);
-        System.out.println(menu.chips);
+    private boolean addChips() throws FileNotFoundException {
+        /* Refactor this to be more efficent */
+        Boolean addMore = false;
+        try {
+            Menu menu = new Menu(1);
+            menu.display(menu.chips);
+            System.out.print("Select a chip from the list: ");
+            Chip chip = (Chip) menu.chips.get(in.nextInt() - 1);
+            cart.add(chip);
+            in.nextLine();
+            runningTotal+= chip.price;
+            System.out.print("Would you like to add more chips?");
+            addMore = in.nextLine().equalsIgnoreCase("Y") ? true : false;
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return addMore? addChips() : false;
     }
 
     }
