@@ -74,13 +74,15 @@ public class UserInterface {
         int input = 0;
         int size = 0;
         Bread bread = null;
+        Sandwich sandwich = null;
+        /*
         ArrayList<Topping> meats = new ArrayList<>();
         ArrayList<Topping> cheeses = new ArrayList<>();
         ArrayList<Topping> regularT = new ArrayList<>();
         ArrayList<Topping> sauces = new ArrayList<>();
         ArrayList<Topping> sides = new ArrayList<>();
+        */
         String[] pages = {"s","b","m","c","r","sauce","sides","complete"};
-        Sandwich sandwich = null;
         Menu menu = null;
         //
         while(input < pages.length) {
@@ -93,6 +95,7 @@ public class UserInterface {
                         Your input: """);
                         size = in.nextInt() - 1;
                         in.nextLine();
+                        sandwich = new Sandwich(size);
                         input++;
                         break;
                     case "b":
@@ -101,42 +104,42 @@ public class UserInterface {
                         menu.display((ArrayList<Topping>) menu.m.get(0));
                         System.out.print("Your Input: ");
                         bread = (Bread) menu.getBreadList().get(in.nextInt() -1);
+                        sandwich.bread = bread;
                         in.nextLine();
                         //runningTotal+= bread.getPrice();
                         order.addToTotal(bread.getPrice());
                         input++;
                         break;
                     case "m":
-                        if(!addPremiumToppings(meats,menu, 1,in,"Meat",size,Prices.extraMeat,order)){
-                            System.out.println(meats);
+
+                        if(!addPremiumToppings(sandwich.meatToppings,menu, 1,in,"Meat",size,Prices.extraMeat,order)){
                             input++;
                         };
                         break;
                     case "c":
-                        if(!addPremiumToppings(cheeses, menu, 2, in, "Cheese", size, Prices.extraCheese,order)) {
-                            System.out.println(cheeses);
+                        if(!addPremiumToppings(sandwich.cheeseToppings, menu, 2, in, "Cheese", size, Prices.extraCheese,order)) {
                             input++;
                         }
                         break;
                     case "r":
-                        if(!addRegularToppings(menu, regularT,3,"Regular Toppings",in)){
+                        if(!addRegularToppings(menu, sandwich.regularToppings,3,"Regular Toppings",in)){
                             input++;
                     }
                         break;
                     case "sauce":
-                        if(!addRegularToppings(menu,sauces,4,"Sauces",in)){
+                        if(!addRegularToppings(menu,sandwich.sauces,4,"Sauces",in)){
                             input++;
                         }
                         break;
                     case "sides":
-                        if(!addRegularToppings(menu,sides,5,"Sides",in)){
+                        if(!addRegularToppings(menu,sandwich.sides,5,"Sides",in)){
                             input++;
                         }
                         break;
                     case "complete":
                         System.out.print("Do you want the sandwich Toasted?(Y/N):");
                         boolean isToasted = in.nextLine().equalsIgnoreCase("Y") ? true : false;
-                        sandwich = new Sandwich(size,0.0,bread,meats,cheeses,regularT,sides,sauces, isToasted);
+                        //sandwich = new Sandwich(size,0.0,bread,meats,cheeses,regularT,sides,sauces, isToasted);
                         input++;
                         break;
                     default:
@@ -145,7 +148,7 @@ public class UserInterface {
                 }
             }
             catch (Exception error){
-                System.out.println("Error");
+                System.out.println(error.getStackTrace());
             }
         }
         order.addToCart(sandwich);
@@ -174,7 +177,6 @@ public class UserInterface {
     private boolean addRegularToppings(Menu menu, ArrayList<Topping> userToppings,int listNum,String type,Scanner in){
         System.out.println(String.format("%s\nSelect a %s type (enter the number next to the item):",type.toUpperCase(), type));
         ArrayList<Topping> temp = (ArrayList<Topping>) menu.m.get(listNum);
-        System.out.println(temp.isEmpty());
         menu.display(temp);
         System.out.print("Your input: ");
         Topping topping = (Topping) ((ArrayList<?>) menu.m.get(listNum)).get(in.nextInt() - 1);

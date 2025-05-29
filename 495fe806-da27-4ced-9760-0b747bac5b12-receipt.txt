@@ -1,0 +1,13 @@
+Receipt 
+Extra Steak:|$0.50
+Extra American:|$0.30
+Extra Provolone:|$0.30
+Extra Cheddar:|$0.30
+Sandwich:
+ White|$5.50
+[Steak|$1.00]
+[American|$0.75, Provolone|$0.75, Cheddar|$0.75]
+[Lettuce|$0.00, Guacamole|$0.00]
+[Mayo|$0.00, Ketchup|$0.00]
+[Au-Jus|$0.00]
+Total:11.55

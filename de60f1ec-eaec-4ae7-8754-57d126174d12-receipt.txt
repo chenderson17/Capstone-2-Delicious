@@ -1,5 +1,0 @@
-Receipt 
-Rootbeer|2.00
-Cotton-Candy|2.00
-Mango|3.00
-Total:7.00

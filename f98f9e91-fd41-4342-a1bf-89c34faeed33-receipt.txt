@@ -1,0 +1,11 @@
+Receipt 
+Fritos|$1.50
+Extra Ham:|$1.00
+Sandwich:
+ Wheat|$7.00
+[Ham|$2.00]
+[American|$1.50]
+[Lettuce|$0.00]
+[Vinaigrette|$0.00, Mayo|$0.00]
+[Au-Jus|$0.00]
+Total:14.00
