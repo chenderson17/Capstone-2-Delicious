@@ -73,7 +73,6 @@ public class UserInterface {
     public void orderASandwich(Order order){
         int input = 0;
         int size = 0;
-        Bread bread = null;
         Sandwich sandwich = null;
         String[] pages = {"s","b","m","c","r","sauce","sides","complete"};
         Menu menu = null;
@@ -96,10 +95,9 @@ public class UserInterface {
                         System.out.println("BREAD\nSelect a bread type (enter the number next to the bread):");
                         menu.display((ArrayList<Topping>) menu.m.get(0));
                         System.out.print("Your Input: ");
-                        bread = (Bread) menu.getBreadList().get(in.nextInt() -1);
-                        sandwich.bread = bread;
+                        sandwich.bread = (Bread) menu.getBreadList().get(in.nextInt() -1);
                         in.nextLine();
-                        order.addToTotal(bread.getPrice());
+                        order.addToTotal(sandwich.bread.getPrice());
                         input++;
                         break;
                     case "m":
