@@ -2,9 +2,8 @@
 
 
 ## Project Description
-This project features a command line application, that allows the user to purchase sandwiches,
+This project features a command line application that allows the user to purchase sandwiches,
 chips, and drinks.
-
 ## Home Screen
 ![Home.png](Home.png)
 
