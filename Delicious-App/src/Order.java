@@ -12,8 +12,15 @@ public class Order {
         cart.add(item);
         runningTotal+= item.price;
     }
-    public String viewCart(){
-        return cart.toString();
+    public void viewCart(){
+       for(Object object : cart){
+           if(object instanceof ArrayList<?>){
+               for(int index = 0; index < ((ArrayList<?>) object).size(); index++){
+                   System.out.println(((ArrayList<?>) object).get(index).toString().replace("[","").replace("]","").join(" "));
+               }
+           }
+           System.out.println(object);
+       }
     }
     public void emptyCart(){
         cart.clear();

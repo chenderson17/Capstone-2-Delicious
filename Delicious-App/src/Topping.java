@@ -19,8 +19,4 @@ public abstract class Topping extends MenuItem{
       return this.price;
    }
 
-    public String toString(){
-      return String.format("%s........$%.2f", name, price);
-    }
-
 }
