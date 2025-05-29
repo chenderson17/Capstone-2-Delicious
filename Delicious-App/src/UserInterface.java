@@ -53,7 +53,7 @@ public class UserInterface {
                                    System.out.println("Cart is empty");
                                }
                                else {
-                                   System.out.println(order.viewCart() + String.format("Total:$%.2f", order.runningTotal));
+                                   order.viewCart();
                                }
                                break;
                            case "6":
@@ -76,15 +76,14 @@ public class UserInterface {
         Sandwich sandwich = null;
         String[] pages = {"s","b","m","c","r","sauce","sides","complete"};
         Menu menu = null;
-        //
         while(input < pages.length) {
             try {
-                switch (pages[input]){
+                switch (pages[input]) {
                     case "s":
                         //order bread
                         System.out.print("""
-                        Press [1] 4" sandwich [2] 8" sandwich [3] 12" sandwich
-                        Your input: """);
+                                Press [1] 4" sandwich [2] 8" sandwich [3] 12" sandwich
+                                Your input: """);
                         size = in.nextInt() - 1;
                         in.nextLine();
                         sandwich = new Sandwich(size);
@@ -95,30 +94,30 @@ public class UserInterface {
                         System.out.println("BREAD\nSelect a bread type (enter the number next to the bread):");
                         menu.display((ArrayList<Topping>) menu.m.get(0));
                         System.out.print("Your Input: ");
-                        sandwich.bread = (Bread) menu.getBreadList().get(in.nextInt() -1);
+                        sandwich.bread = (Bread) menu.getBreadList().get(in.nextInt() - 1);
                         in.nextLine();
-                        sandwich.price+= sandwich.bread.getPrice();
+                        sandwich.price += sandwich.bread.getPrice();
                         input++;
                         break;
                     case "m":
-                        sandwich.price+= addPremiumToppings(sandwich.meatToppings,menu, 1,"Meat",size,Prices.extraMeat,0.0);
+                        sandwich.price += addPremiumToppings(sandwich.meatToppings, menu, 1, "Meat", size, Prices.extraMeat, 0.0);
                         input++;
                         break;
                     case "c":
-                        sandwich.price += addPremiumToppings(sandwich.cheeseToppings,menu, 2,"Cheese",size,Prices.extraCheese,0.0);
+                        sandwich.price += addPremiumToppings(sandwich.cheeseToppings, menu, 2, "Cheese", size, Prices.extraCheese, 0.0);
                         input++;
                         break;
                     case "r":
-                        addRegularToppings(menu, sandwich.regularToppings,3,"Regular Toppings");
+                        addRegularToppings(menu, sandwich.regularToppings, 3, "Regular Toppings");
                         input++;
                         break;
                     case "sauce":
-                            addRegularToppings(menu,sandwich.sauces,4,"Sauces");
-                            input++;
+                        addRegularToppings(menu, sandwich.sauces, 4, "Sauces");
+                        input++;
                         break;
                     case "sides":
-                            addRegularToppings(menu,sandwich.sides,5,"Sides");
-                            input++;
+                        addRegularToppings(menu, sandwich.sides, 5, "Sides");
+                        input++;
                         break;
                     case "complete":
                         System.out.print("Do you want the sandwich Toasted?(Y/N):");
@@ -129,8 +128,7 @@ public class UserInterface {
                         System.out.println("Thank you.");
                         break;
                 }
-            }
-            catch (Exception error){
+            } catch (Exception error) {
                 System.out.println(error);
             }
         }
@@ -206,13 +204,8 @@ public class UserInterface {
     }
 
     private void checkout(Order order){
-        /**
-         * • Checkout - display the order details and the price
-         * o Confirm - create the receipt file and go back to the home screen
-         * o Cancel - delete order and go back to the homescreen
-         */
         System.out.println("CHECKOUT");
-        System.out.println(order.viewCart());
+        order.viewCart();
         System.out.print("Press Y to Confirm or Press enter to cancel:");
         String input = in.nextLine();
         if(input.equalsIgnoreCase("Y")){
