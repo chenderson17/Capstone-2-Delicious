@@ -3,7 +3,6 @@ public class Meat extends Topping{
         super(name,price);
     }
 
-
     @Override
     void setPrice(int size) {
         this.price = Prices.meatPrices[size];
