@@ -75,13 +75,6 @@ public class UserInterface {
         int size = 0;
         Bread bread = null;
         Sandwich sandwich = null;
-        /*
-        ArrayList<Topping> meats = new ArrayList<>();
-        ArrayList<Topping> cheeses = new ArrayList<>();
-        ArrayList<Topping> regularT = new ArrayList<>();
-        ArrayList<Topping> sauces = new ArrayList<>();
-        ArrayList<Topping> sides = new ArrayList<>();
-        */
         String[] pages = {"s","b","m","c","r","sauce","sides","complete"};
         Menu menu = null;
         //
@@ -106,7 +99,6 @@ public class UserInterface {
                         bread = (Bread) menu.getBreadList().get(in.nextInt() -1);
                         sandwich.bread = bread;
                         in.nextLine();
-                        //runningTotal+= bread.getPrice();
                         order.addToTotal(bread.getPrice());
                         input++;
                         break;
@@ -138,8 +130,7 @@ public class UserInterface {
                         break;
                     case "complete":
                         System.out.print("Do you want the sandwich Toasted?(Y/N):");
-                        boolean isToasted = in.nextLine().equalsIgnoreCase("Y") ? true : false;
-                        //sandwich = new Sandwich(size,0.0,bread,meats,cheeses,regularT,sides,sauces, isToasted);
+                        sandwich.isToasted = in.nextLine().equalsIgnoreCase("Y") ? true : false;
                         input++;
                         break;
                     default:
