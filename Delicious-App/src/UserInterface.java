@@ -215,7 +215,14 @@ public class UserInterface {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file,true));
                 writer.write("Receipt \n");
                 for(Object item : order.cart){
-                    writer.write(String.valueOf(item) +"\n");
+                    if(item instanceof ArrayList<?>){
+                        for(int index = 0; index < ((ArrayList<?>) item).size(); index++){
+                            writer.write(((ArrayList<?>) item).get(index).toString().replace("[","").replace("]","").join(" ") + "\n");
+                        }
+                    }
+                    else {
+                        writer.write(item.toString() + "\n");
+                    }
                 }
                 writer.write(String.format("Total:%.2f",order.getRunningTotal()));
                 writer.close();
