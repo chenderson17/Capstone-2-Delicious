@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Sandwich implements IMenuItem {
+public class Sandwich extends MenuItem {
     /**
      * Size
      * Bread
@@ -11,29 +11,15 @@ public class Sandwich implements IMenuItem {
      */
 int size;
 Bread bread;
-ArrayList<Topping> meatToppings;
-ArrayList<Topping> cheeseToppings;
-ArrayList<Topping> regularToppings;
-ArrayList<Topping> sauces;
-ArrayList<Topping> sides;
-double total;
-boolean isToasted;
-Sandwich(int size,Bread bread, ArrayList<Topping> meatToppings,ArrayList<Topping> cheeseToppings, ArrayList<Topping> regularToppings, ArrayList<Topping> sides,ArrayList<Topping> sauces, double total ,boolean isToasted){
-    this.size = size;
-    this.bread = bread;
-    this.meatToppings = meatToppings;
-    this.cheeseToppings = cheeseToppings;
-    this.regularToppings = regularToppings;
-    this.sides = sides;
-    this.sauces = sauces;
-    this.total = total;
-    this.isToasted = isToasted;
-}
-
-
-
-    public double getTotal(){
-    return total;
+ArrayList<Topping> meatToppings = new ArrayList<>();
+ArrayList<Topping> cheeseToppings = new ArrayList<>();
+ArrayList<Topping> regularToppings = new ArrayList<>();
+ArrayList<Topping> sauces = new ArrayList<>();
+ArrayList<Topping> sides = new ArrayList<>();
+boolean isToasted = false;
+    Sandwich(int size){
+        super("Sandwich",0.0);
+        this.size = size;
     }
     @Override
     public String toString(){

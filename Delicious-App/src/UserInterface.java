@@ -2,7 +2,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.UUID;
@@ -10,8 +9,7 @@ import java.util.UUID;
 public class UserInterface {
     Scanner in = new Scanner(System.in);
     String userInput;
-    public double runningTotal = 0.0;
-    ArrayList<Object> cart = new ArrayList<>();
+    //public double runningTotal = 0.0;
     void run(){
         String userInput = "";
         while(!userInput.equalsIgnoreCase( "0")){
@@ -24,6 +22,7 @@ public class UserInterface {
                 userInput = in.nextLine();
                 String orderInput = "";
                if(userInput.equals("1")){
+                   Order order = new Order();
                    while(!orderInput .equals("0")){
                        System.out.print("""
                                         1) Order a Sandwich
@@ -37,32 +36,30 @@ public class UserInterface {
                        orderInput = in.nextLine();
                        switch (orderInput){
                            case "0":
-                               cart.clear();
-                               runningTotal = 0.0;
+                               order.emptyCart();
                                System.out.println("*** Order Cancelled ***");
                                break;
                            case "1":
-                               orderASandwich();
+                               order.addToCart(orderASandwich());
                                break;
                            case "2":
-                               orderDrink();
+                               addDrink(order);
                                break;
                            case "3":
-                               addChips();
+                               addChips(order);
                                break;
                            case "5":
-                               if(cart.isEmpty()){
+                               if(order.cart.isEmpty()){
                                    System.out.println("Cart is empty");
                                }
                                else {
-                                   System.out.println(cart + String.format("Total:$%.2f", runningTotal));
+                                   System.out.println(order.viewCart() + String.format("Total:$%.2f", order.runningTotal));
                                }
                                break;
                            case "6":
-                               checkout();
+                               checkout(order);
                                orderInput = "0";
-                               cart.clear();
-                               runningTotal = 0.0;
+                               order.emptyCart();
                                break;
                        }
                    }
@@ -73,15 +70,10 @@ public class UserInterface {
             }
         }
     }
-    public void orderASandwich(){
+    public Sandwich orderASandwich(){
         int input = 0;
         int size = 0;
-        Bread bread = null;
-        ArrayList<Topping> meats = new ArrayList<>();
-        ArrayList<Topping> cheeses = new ArrayList<>();
-        ArrayList<Topping> regularT = new ArrayList<>();
-        ArrayList<Topping> sauces = new ArrayList<>();
-        ArrayList<Topping> sides = new ArrayList<>();
+        Sandwich sandwich = null;
         String[] pages = {"s","b","m","c","r","sauce","sides","complete"};
         Menu menu = null;
         //
@@ -95,6 +87,7 @@ public class UserInterface {
                         Your input: """);
                         size = in.nextInt() - 1;
                         in.nextLine();
+                        sandwich = new Sandwich(size);
                         input++;
                         break;
                     case "b":
@@ -102,45 +95,34 @@ public class UserInterface {
                         System.out.println("BREAD\nSelect a bread type (enter the number next to the bread):");
                         menu.display((ArrayList<Topping>) menu.m.get(0));
                         System.out.print("Your Input: ");
-                        bread = (Bread) menu.getBreadList().get(in.nextInt() -1);
+                        sandwich.bread = (Bread) menu.getBreadList().get(in.nextInt() -1);
                         in.nextLine();
-                        runningTotal+= bread.getPrice();
+                        sandwich.price+= sandwich.bread.getPrice();
                         input++;
                         break;
                     case "m":
-                        if(!addPremiumToppings(meats,menu, 1,in,"Meat",size,Prices.extraMeat)){
-                            System.out.println(meats);
-                            input++;
-                        };
+                        sandwich.price+= addPremiumToppings(sandwich.meatToppings,menu, 1,"Meat",size,Prices.extraMeat,0.0);
+                        input++;
                         break;
                     case "c":
-                        if(!addPremiumToppings(cheeses, menu, 2, in, "Cheese", size, Prices.extraCheese)) {
-                            System.out.println(cheeses);
-                            input++;
-                        }
+                        sandwich.price += addPremiumToppings(sandwich.cheeseToppings,menu, 2,"Cheese",size,Prices.extraCheese,0.0);
+                        input++;
                         break;
                     case "r":
-                        if(!addRegularToppings(menu, regularT,3,"Regular Toppings",in)){
-                            input++;
-                    }
+                        addRegularToppings(menu, sandwich.regularToppings,3,"Regular Toppings");
+                        input++;
                         break;
                     case "sauce":
-                        if(!addRegularToppings(menu,sauces,4,"Sauces",in)){
+                            addRegularToppings(menu,sandwich.sauces,4,"Sauces");
                             input++;
-                        }
                         break;
                     case "sides":
-                        if(!addRegularToppings(menu,sides,5,"Sides",in)){
+                            addRegularToppings(menu,sandwich.sides,5,"Sides");
                             input++;
-                        }
                         break;
                     case "complete":
                         System.out.print("Do you want the sandwich Toasted?(Y/N):");
-                        boolean isToasted = in.nextLine().equalsIgnoreCase("Y") ? true : false;
-                        Sandwich sandwich = new Sandwich(size,bread,meats,cheeses,regularT,sides,sauces,runningTotal, isToasted);
-                        cart.add(sandwich);
-                        System.out.println(cart);
-                        System.out.println(String.format("Total:$%.2f", sandwich.getTotal()));
+                        sandwich.isToasted = in.nextLine().equalsIgnoreCase("Y") ? true : false;
                         input++;
                         break;
                     default:
@@ -149,55 +131,49 @@ public class UserInterface {
                 }
             }
             catch (Exception error){
-                System.out.println("Error");
+                System.out.println(error);
             }
         }
+        return sandwich;
     }
-    private void orderDrink() throws FileNotFoundException {
-        try {
-            addDrink();
+    private double addPremiumToppings(ArrayList<Topping> userToppings, Menu menu, int listNum, String type, int size, double[] priceList, double t) {
+        System.out.println(String.format("%s\nSelect a %s type (enter the number next to the item):", type.toUpperCase(), type));
+        ArrayList<Topping> temp = (ArrayList<Topping>) menu.m.get(listNum);
+        menu.display(temp);
+        System.out.print("Your input: ");
+        Topping topping = (Topping) ((ArrayList<?>) menu.m.get(listNum)).get(in.nextInt() - 1);
+        temp.remove(topping);
+        in.nextLine();
+        System.out.print(String.format("Extra %s for %.2f?? (Y/N): ", type, priceList[size]));
+        ;
+        Boolean extraTopping = in.nextLine().equalsIgnoreCase("Y") ? true : false;
+        if (extraTopping) {
+            topping.price += priceList[size];
+            t+=topping.getPrice();
+        } else {
+            t+= topping.getPrice();
         }
-        catch (Exception error){
-            System.out.println(error);
-        }
+        userToppings.add(topping);
+        System.out.print(String.format("Add more %s (Y/N): ", type));
+        Boolean addMore = in.nextLine().equalsIgnoreCase("Y") ? true : false;
+        return addMore && !temp.isEmpty() ? addPremiumToppings(userToppings, menu, listNum, type, size, priceList,t) : t;
+    }
+    private boolean addRegularToppings(Menu menu, ArrayList<Topping> userToppings,int listNum,String type){
+        System.out.println(String.format("%s\nSelect a %s type (enter the number next to the item):",type.toUpperCase(), type));
+        ArrayList<Topping> temp = (ArrayList<Topping>) menu.m.get(listNum);
+        menu.display(temp);
+        System.out.print("Your input: ");
+        Topping topping = (Topping) ((ArrayList<?>) menu.m.get(listNum)).get(in.nextInt() - 1);
+        userToppings.add(topping);
+        temp.remove(topping);
+        in.nextLine();
+        System.out.print(String.format("Add more %s? (Y/N): ",type));
+        Boolean addMore = in.nextLine().equalsIgnoreCase("Y") ? true : false;
+        return addMore && !temp.isEmpty() ? addRegularToppings(menu, userToppings,listNum,type) : false;
+    }
 
-    }
-    private boolean addPremiumToppings(ArrayList<Topping> userToppings, Menu menu, int listNum, Scanner in, String type, int size, double[] priceList){
-        System.out.println(String.format("%s\nSelect a %s type (enter the number next to the item):",type.toUpperCase(), type));
-        ArrayList<Topping> temp = (ArrayList<Topping>) menu.m.get(listNum);
-        menu.display(temp);
-        System.out.print("Your input: ");
-        Topping topping = (Topping) ((ArrayList<?>) menu.m.get(listNum)).get(in.nextInt() - 1);
-        userToppings.add(topping);
-        temp.remove(topping);
-        in.nextLine();
-        System.out.print(String.format("Extra %s? (Y/N): ", type));;
-        Boolean extraMeat = in.nextLine().equalsIgnoreCase("Y") ? true : false;
-        if(extraMeat) {
-            runningTotal += priceList[size] + topping.getPrice();
-            cart.add(String.format("Extra %s:$%.2f",topping.name,priceList[size]));
-        }
-        else{runningTotal+= topping.getPrice();
-        }
-        System.out.print(String.format("Add more %s? (Y/N): ",type));
-        Boolean addMore = in.nextLine().equalsIgnoreCase("Y") ? true : false;
-        return addMore && !temp.isEmpty();
-    }
-    private boolean addRegularToppings(Menu menu, ArrayList<Topping> userToppings,int listNum,String type,Scanner in){
-        System.out.println(String.format("%s\nSelect a %s type (enter the number next to the item):",type.toUpperCase(), type));
-        ArrayList<Topping> temp = (ArrayList<Topping>) menu.m.get(listNum);
-        System.out.println(temp.isEmpty());
-        menu.display(temp);
-        System.out.print("Your input: ");
-        Topping topping = (Topping) ((ArrayList<?>) menu.m.get(listNum)).get(in.nextInt() - 1);
-        userToppings.add(topping);
-        temp.remove(topping);
-        in.nextLine();
-        System.out.print(String.format("Add more %s? (Y/N): ",type));
-        Boolean addMore = in.nextLine().equalsIgnoreCase("Y") ? true : false;
-        return addMore && !temp.isEmpty();
-    }
-    private boolean addDrink() throws FileNotFoundException {
+
+    private boolean addDrink(Order order) throws FileNotFoundException {
         System.out.print("What size drink? [1]Small [2] Medium [3]Large:");
         int size = in.nextInt() - 1;
         in.nextLine();
@@ -206,37 +182,37 @@ public class UserInterface {
         System.out.printf("Select a drink from the list: " );
         Drink drink = (Drink) menu.drinks.get(in.nextInt()-1);
         in.nextLine();
-        cart.add(drink);
-        runningTotal+= drink.price;
+        order.addToCart(drink);
         System.out.print("Would you like to order another drink?: ");
-        return in.nextLine().equalsIgnoreCase("Y")? addDrink():false;
+        return in.nextLine().equalsIgnoreCase("Y")? addDrink(order):false;
     }
-    private boolean addChips() throws FileNotFoundException {
+
+
+
+    private boolean addChips(Order order) throws FileNotFoundException {
         /* Refactor this to be more efficent */
-        Boolean addMore = false;
         try {
             Menu menu = new Menu(1);
             menu.display(menu.chips);
             System.out.print("Select a chip from the list: ");
             Chip chip = (Chip) menu.chips.get(in.nextInt() - 1);
-            cart.add(chip);
+            order.addToCart(chip);
             in.nextLine();
-            runningTotal+= chip.price;
             System.out.print("Would you like to add more chips?(Y/N):");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-        return in.nextLine().equalsIgnoreCase("Y") ? addChips() : false;
+        return in.nextLine().equalsIgnoreCase("Y") ? addChips(order) : false;
     }
 
-    private void checkout(){
+    private void checkout(Order order){
         /**
          * • Checkout - display the order details and the price
          * o Confirm - create the receipt file and go back to the home screen
          * o Cancel - delete order and go back to the homescreen
          */
         System.out.println("CHECKOUT");
-        System.out.println(cart);
+        System.out.println(order.viewCart());
         System.out.print("Press Y to Confirm or Press enter to cancel:");
         String input = in.nextLine();
         if(input.equalsIgnoreCase("Y")){
@@ -245,10 +221,10 @@ public class UserInterface {
                 File file = new File(String.valueOf(uuid) + "-receipt.txt");
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file,true));
                 writer.write("Receipt \n");
-                for(Object item : cart){
+                for(Object item : order.cart){
                     writer.write(String.valueOf(item) +"\n");
                 }
-                writer.write(String.format("Total:%.2f",runningTotal));
+                writer.write(String.format("Total:%.2f",order.getRunningTotal()));
                 writer.close();
 
             } catch (Exception e) {
