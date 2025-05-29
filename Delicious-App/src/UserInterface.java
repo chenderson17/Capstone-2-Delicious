@@ -28,9 +28,8 @@ public class UserInterface {
                                         1) Order a Sandwich
                                         2) Add Drink
                                         3) Add Chips
-                                        4) Checkout
-                                        5) View Cart
-                                        6) Checkout
+                                        4) View Cart
+                                        5) Checkout
                                         0) Cancel Order
                                         Your Input: """);
                        orderInput = in.nextLine();
@@ -48,7 +47,7 @@ public class UserInterface {
                            case "3":
                                addChips(order);
                                break;
-                           case "5":
+                           case "4":
                                if(order.cart.isEmpty()){
                                    System.out.println("Cart is empty");
                                }
@@ -56,7 +55,7 @@ public class UserInterface {
                                    order.viewCart();
                                }
                                break;
-                           case "6":
+                           case "5":
                                checkout(order);
                                orderInput = "0";
                                order.emptyCart();
@@ -67,6 +66,7 @@ public class UserInterface {
             }
             catch (Exception error){
                 System.out.println("Error: " + error + "Please try again.");
+                in.nextLine();
             }
         }
     }
@@ -135,25 +135,25 @@ public class UserInterface {
         return sandwich;
     }
     private double addPremiumToppings(ArrayList<Topping> userToppings, Menu menu, int listNum, String type, int size, double[] priceList, double t) {
-        System.out.println(String.format("%s\nSelect a %s type (enter the number next to the item):", type.toUpperCase(), type));
-        ArrayList<Topping> temp = (ArrayList<Topping>) menu.m.get(listNum);
-        menu.display(temp);
-        System.out.print("Your input: ");
-        Topping topping = (Topping) ((ArrayList<?>) menu.m.get(listNum)).get(in.nextInt() - 1);
-        temp.remove(topping);
-        in.nextLine();
-        System.out.print(String.format("Extra %s for %.2f? (Y/N): ", type, priceList[size]));
-        ;
-        Boolean extraTopping = in.nextLine().equalsIgnoreCase("Y") ? true : false;
-        if (extraTopping) {
-            topping.price += priceList[size];
-            t+=topping.getPrice();
-        } else {
-            t+= topping.getPrice();
-        }
-        userToppings.add(topping);
-        System.out.print(String.format("Add more %s (Y/N): ", type));
-        Boolean addMore = in.nextLine().equalsIgnoreCase("Y") ? true : false;
+            System.out.println(String.format("%s\nSelect a %s type (enter the number next to the item):", type.toUpperCase(), type));
+            ArrayList<Topping> temp = (ArrayList<Topping>) menu.m.get(listNum);
+            menu.display(temp);
+            System.out.print("Your input: ");
+            Topping topping = (Topping) ((ArrayList<?>) menu.m.get(listNum)).get(in.nextInt() - 1);
+            temp.remove(topping);
+            in.nextLine();
+            System.out.print(String.format("Extra %s for %.2f? (Y/N): ", type, priceList[size]));
+            ;
+            Boolean extraTopping = in.nextLine().equalsIgnoreCase("Y") ? true : false;
+            if (extraTopping) {
+                topping.price += priceList[size];
+                t += topping.getPrice();
+            } else {
+                t += topping.getPrice();
+            }
+            userToppings.add(topping);
+            System.out.print(String.format("Add more %s (Y/N): ", type));
+            Boolean addMore = in.nextLine().equalsIgnoreCase("Y") ? true : false;
         return addMore && !temp.isEmpty() ? addPremiumToppings(userToppings, menu, listNum, type, size, priceList,t) : t;
     }
     private boolean addRegularToppings(Menu menu, ArrayList<Topping> userToppings,int listNum,String type){
