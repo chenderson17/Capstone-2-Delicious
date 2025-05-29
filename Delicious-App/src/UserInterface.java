@@ -101,37 +101,24 @@ public class UserInterface {
                         input++;
                         break;
                     case "m":
-                        /*
-                        if(!addPremiumToppings(sandwich.meatToppings,menu, 1,"Meat",size,Prices.extraMeat,order)){
-                            input++;
-                       }
-                         */
                         sandwich.price+= addPremiumToppings(sandwich.meatToppings,menu, 1,"Meat",size,Prices.extraMeat,0.0);
                         input++;
                         break;
                     case "c":
-                        /*
-                        if(!addPremiumToppings(sandwich.cheeseToppings, menu, 2, "Cheese", size, Prices.extraCheese,order)) {
-                            input++;
-                        }
-                         */
-                        sandwich.price += addPremiumToppings(sandwich.cheeseToppings,menu, 2,"Cheese",size,Prices.extraMeat,0.0);
+                        sandwich.price += addPremiumToppings(sandwich.cheeseToppings,menu, 2,"Cheese",size,Prices.extraCheese,0.0);
                         input++;
                         break;
                     case "r":
-                        if(!addRegularToppings(menu, sandwich.regularToppings,3,"Regular Toppings",in)){
-                            input++;
-                    }
+                        addRegularToppings(menu, sandwich.regularToppings,3,"Regular Toppings");
+                        input++;
                         break;
                     case "sauce":
-                        if(!addRegularToppings(menu,sandwich.sauces,4,"Sauces",in)){
+                            addRegularToppings(menu,sandwich.sauces,4,"Sauces");
                             input++;
-                        }
                         break;
                     case "sides":
-                        if(!addRegularToppings(menu,sandwich.sides,5,"Sides",in)){
+                            addRegularToppings(menu,sandwich.sides,5,"Sides");
                             input++;
-                        }
                         break;
                     case "complete":
                         System.out.print("Do you want the sandwich Toasted?(Y/N):");
@@ -149,53 +136,29 @@ public class UserInterface {
         }
         return sandwich;
     }
-    /*
-    private boolean addPremiumToppings(ArrayList<Topping> userToppings, Menu menu, int listNum, String type, int size, double[] priceList, Order order){
-        System.out.println(String.format("%s\nSelect a %s type (enter the number next to the item):",type.toUpperCase(), type));
-        ArrayList<Topping> temp = (ArrayList<Topping>) menu.m.get(listNum);
-        menu.display(temp);
-        System.out.print("Your input: ");
-        Topping topping = (Topping) ((ArrayList<?>) menu.m.get(listNum)).get(in.nextInt() - 1);
-        userToppings.add(topping);
-        temp.remove(topping);
-        in.nextLine();
-        System.out.print(String.format("Extra %s? (Y/N): ", type));;
-        Boolean extraTopping = in.nextLine().equalsIgnoreCase("Y") ? true : false;
-        if(extraTopping) {
-            order.addToTotal(priceList[size] + topping.getPrice());
-            order.addToCart(new MenuItem(String.format("Extra %s:",topping.name),priceList[size]));
-        }
-        else{order.addToTotal(topping.getPrice());
-        }
-        System.out.print(String.format("Add more %s? (Y/N): ",type));
-        Boolean addMore = in.nextLine().equalsIgnoreCase("Y") ? true : false;
-        return addMore && !temp.isEmpty();
-    }
-     */
     private double addPremiumToppings(ArrayList<Topping> userToppings, Menu menu, int listNum, String type, int size, double[] priceList, double t) {
         System.out.println(String.format("%s\nSelect a %s type (enter the number next to the item):", type.toUpperCase(), type));
         ArrayList<Topping> temp = (ArrayList<Topping>) menu.m.get(listNum);
         menu.display(temp);
         System.out.print("Your input: ");
         Topping topping = (Topping) ((ArrayList<?>) menu.m.get(listNum)).get(in.nextInt() - 1);
-        userToppings.add(topping);
         temp.remove(topping);
         in.nextLine();
-        System.out.print(String.format("Extra %s? (Y/N): ", type));
+        System.out.print(String.format("Extra %s for %.2f?? (Y/N): ", type, priceList[size]));
         ;
         Boolean extraTopping = in.nextLine().equalsIgnoreCase("Y") ? true : false;
         if (extraTopping) {
-            t+=priceList[size] + topping.getPrice();
-            //order.addToCart(new MenuItem(String.format("Extra %s:", topping.name), priceList[size]));
+            topping.price += priceList[size];
+            t+=topping.getPrice();
         } else {
-            //order.addToTotal(topping.getPrice());
             t+= topping.getPrice();
         }
-        System.out.print(String.format("Add more %s? (Y/N): ", type));
+        userToppings.add(topping);
+        System.out.print(String.format("Add more %s (Y/N): ", type));
         Boolean addMore = in.nextLine().equalsIgnoreCase("Y") ? true : false;
         return addMore && !temp.isEmpty() ? addPremiumToppings(userToppings, menu, listNum, type, size, priceList,t) : t;
     }
-    private boolean addRegularToppings(Menu menu, ArrayList<Topping> userToppings,int listNum,String type,Scanner in){
+    private boolean addRegularToppings(Menu menu, ArrayList<Topping> userToppings,int listNum,String type){
         System.out.println(String.format("%s\nSelect a %s type (enter the number next to the item):",type.toUpperCase(), type));
         ArrayList<Topping> temp = (ArrayList<Topping>) menu.m.get(listNum);
         menu.display(temp);
@@ -206,7 +169,7 @@ public class UserInterface {
         in.nextLine();
         System.out.print(String.format("Add more %s? (Y/N): ",type));
         Boolean addMore = in.nextLine().equalsIgnoreCase("Y") ? true : false;
-        return addMore && !temp.isEmpty();
+        return addMore && !temp.isEmpty() ? addRegularToppings(menu, userToppings,listNum,type) : false;
     }
     private boolean addDrink(Order order) throws FileNotFoundException {
         System.out.print("What size drink? [1]Small [2] Medium [3]Large:");
