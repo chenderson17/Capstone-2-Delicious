@@ -8,7 +8,7 @@ public class Order {
     }
     //drinks
     //chips
-    public void addToCart (IMenuItem item){
+    public void addToCart (MenuItem item){
         cart.add(item);
         runningTotal+= item.price;
     }

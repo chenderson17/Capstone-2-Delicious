@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Sandwich extends IMenuItem {
+public class Sandwich extends MenuItem {
     /**
      * Size
      * Bread

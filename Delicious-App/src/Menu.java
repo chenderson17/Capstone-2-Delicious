@@ -1,10 +1,5 @@
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
 
 public class Menu <E> {
     int size;
@@ -14,9 +9,9 @@ public class Menu <E> {
     protected ArrayList<Topping> regularToppingList = new ArrayList<>();
     protected ArrayList<Topping> sauces = new ArrayList<>();
     ArrayList<Topping> sides = new ArrayList<>();
-    ArrayList<IMenuItem> chips = new ArrayList<>();
+    ArrayList<MenuItem> chips = new ArrayList<>();
     GenerateDynamicMenu generate = new GenerateDynamicMenu();
-    ArrayList<IMenuItem> drinks = new ArrayList<>();
+    ArrayList<MenuItem> drinks = new ArrayList<>();
     ArrayList<ArrayList<Topping>> m = new ArrayList<>();
     Menu(int size) throws FileNotFoundException {
         this.size = size;

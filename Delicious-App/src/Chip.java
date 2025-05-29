@@ -1,5 +1,5 @@
-public class Chip extends  IMenuItem {
+public class Chip extends MenuItem {
     Chip(String name, double price) {
-        super(name, price);
+        super(name, 1.50);
     }
 }

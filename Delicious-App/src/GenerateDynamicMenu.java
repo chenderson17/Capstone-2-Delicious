@@ -1,13 +1,12 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GenerateDynamicMenu {
     File f = new File("food.csv");
     Scanner reader;
-    public void generate(int size, ArrayList<Topping> breadList, ArrayList<Topping> meatList, ArrayList<Topping> cheeseList, ArrayList<Topping> regularToppingList, ArrayList<Topping> sauces, ArrayList<Topping> sides, ArrayList<IMenuItem> drinks, ArrayList<IMenuItem> chips) throws FileNotFoundException {
+    public void generate(int size, ArrayList<Topping> breadList, ArrayList<Topping> meatList, ArrayList<Topping> cheeseList, ArrayList<Topping> regularToppingList, ArrayList<Topping> sauces, ArrayList<Topping> sides, ArrayList<MenuItem> drinks, ArrayList<MenuItem> chips) throws FileNotFoundException {
         try {
             Scanner reader = new Scanner(f);
             while (reader.hasNextLine()) {
