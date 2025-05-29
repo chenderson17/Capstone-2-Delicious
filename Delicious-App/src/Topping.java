@@ -1,13 +1,9 @@
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class Topping {
-   protected String name;
-   protected int size; //user input
-   protected double price;
+public abstract class Topping extends MenuItem{
    Topping(String name, double price){
-      this.name = name;
-      this.price = price;
+      super(name,price);
    }
    //setter
    abstract void setPrice(int size);
@@ -24,7 +20,7 @@ public abstract class Topping {
    }
 
     public String toString(){
-      return String.format("%s|$%.2f", name, price);
+      return String.format("%s........$%.2f", name, price);
     }
 
 }

@@ -144,7 +144,7 @@ public class UserInterface {
         Topping topping = (Topping) ((ArrayList<?>) menu.m.get(listNum)).get(in.nextInt() - 1);
         temp.remove(topping);
         in.nextLine();
-        System.out.print(String.format("Extra %s for %.2f?? (Y/N): ", type, priceList[size]));
+        System.out.print(String.format("Extra %s for %.2f? (Y/N): ", type, priceList[size]));
         ;
         Boolean extraTopping = in.nextLine().equalsIgnoreCase("Y") ? true : false;
         if (extraTopping) {
