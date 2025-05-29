@@ -171,6 +171,8 @@ public class UserInterface {
         Boolean addMore = in.nextLine().equalsIgnoreCase("Y") ? true : false;
         return addMore && !temp.isEmpty() ? addRegularToppings(menu, userToppings,listNum,type) : false;
     }
+
+
     private boolean addDrink(Order order) throws FileNotFoundException {
         System.out.print("What size drink? [1]Small [2] Medium [3]Large:");
         int size = in.nextInt() - 1;
@@ -184,6 +186,9 @@ public class UserInterface {
         System.out.print("Would you like to order another drink?: ");
         return in.nextLine().equalsIgnoreCase("Y")? addDrink(order):false;
     }
+
+
+
     private boolean addChips(Order order) throws FileNotFoundException {
         /* Refactor this to be more efficent */
         try {
