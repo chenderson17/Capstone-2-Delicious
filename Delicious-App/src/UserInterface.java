@@ -217,7 +217,7 @@ public class UserInterface {
                 for(Object item : order.cart){
                     if(item instanceof ArrayList<?>){
                         for(int index = 0; index < ((ArrayList<?>) item).size(); index++){
-                            writer.write(((ArrayList<?>) item).get(index).toString().replace("[","").replace("]","").join(" ") + "\n");
+                            writer.write(((ArrayList<?>) item).get(index).toString().replace("[","").replace("]","").join("") + "\n");
                         }
                     }
                     else {
