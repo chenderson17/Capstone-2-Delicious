@@ -1,15 +1,19 @@
+import javax.swing.text.DateFormatter;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.UUID;
 
 public class UserInterface {
     Scanner in = new Scanner(System.in);
-    String userInput;
-    //public double runningTotal = 0.0;
     void run(){
         String userInput = "";
         while(!userInput.equalsIgnoreCase( "0")){
@@ -209,10 +213,13 @@ public class UserInterface {
         order.viewCart();
         System.out.print("Press Y to Confirm or Press enter to cancel:");
         String input = in.nextLine();
+        LocalDateTime d =  LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
+        String formattedDate = d.format(formatter);
         if(input.equalsIgnoreCase("Y")){
             UUID uuid =  UUID.randomUUID();
             try{
-                File file = new File(String.valueOf(uuid) + "-receipt.txt");
+                File file = new File(String.valueOf(formattedDate) + ".txt");
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file,true));
                 writer.write("Receipt \n");
                 for(Object item : order.cart){

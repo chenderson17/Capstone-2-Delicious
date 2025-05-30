@@ -6,8 +6,6 @@ public class Order {
     double runningTotal = 0.00;
     Order(){
     }
-    //drinks
-    //chips
     public void addToCart (MenuItem item){
         cart.add(item);
         runningTotal+= item.price;
