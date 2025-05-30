@@ -219,7 +219,7 @@ public class UserInterface {
         if(input.equalsIgnoreCase("Y")){
             UUID uuid =  UUID.randomUUID();
             try{
-                File file = new File(String.valueOf(formattedDate) + ".txt");
+                File file = new File(formattedDate + ".txt");
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file,true));
                 writer.write("Receipt \n");
                 for(Object item : order.cart){
