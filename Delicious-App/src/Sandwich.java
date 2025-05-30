@@ -1,14 +1,6 @@
 import java.util.ArrayList;
 
 public class Sandwich extends MenuItem {
-    /**
-     * Size
-     * Bread
-     * Premium Toppings
-     * Regular toppings
-     * Sauce
-     * *Total
-     */
 int size;
 Bread bread;
 ArrayList<Topping> meatToppings = new ArrayList<>();
@@ -23,7 +15,7 @@ boolean isToasted = false;
     }
     @Override
     public String toString(){
-    return ("Sandwich:\n" + bread + "\n" + meatToppings + "\n" + cheeseToppings+ "\n"+ regularToppings + "\n" + sauces + "\n" + sides + "\n").replace("[","").replace("]","");
+    return ("Sandwich:\n" + bread + "\n" + meatToppings + "\n" + cheeseToppings+ "\n"+ regularToppings + "\n" + sauces + "\n" + sides + "\n" + (isToasted ? "Toasted":"")).replace("[","").replace("]","");
     }
 
 }

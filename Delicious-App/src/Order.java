@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
-    protected List<Object> cart = new ArrayList<>();
+    protected List<MenuItem> cart = new ArrayList<>();
     double runningTotal = 0.00;
     Order(){
     }
@@ -11,13 +11,8 @@ public class Order {
         runningTotal+= item.price;
     }
     public void viewCart(){
-       for(Object object : cart){
-           if(object instanceof ArrayList<?>){
-               for(int index = 0; index < ((ArrayList<?>) object).size(); index++){
-                   System.out.println(((ArrayList<?>) object).get(index).toString().replace("[","").replace("]","").join(" "));
-               }
-           }
-           System.out.println(object);
+       for(MenuItem item : cart) {
+           System.out.println(item);
        }
     }
     public void emptyCart(){
