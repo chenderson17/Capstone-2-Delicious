@@ -3,8 +3,4 @@ public class RegularTopping extends Topping{
         super(name, price);
     }
 
-    @Override
-    void setPrice(int size) {
-        price = 0.00;
-    }
 }

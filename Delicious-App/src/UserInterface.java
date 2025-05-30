@@ -130,6 +130,7 @@ public class UserInterface {
                 }
             } catch (Exception error) {
                 System.out.println(error);
+                in.nextLine();
             }
         }
         return sandwich;
@@ -143,7 +144,6 @@ public class UserInterface {
             temp.remove(topping);
             in.nextLine();
             System.out.print(String.format("Extra %s for %.2f? (Y/N): ", type, priceList[size]));
-            ;
             Boolean extraTopping = in.nextLine().equalsIgnoreCase("Y") ? true : false;
             if (extraTopping) {
                 topping.price += priceList[size];
@@ -156,6 +156,7 @@ public class UserInterface {
             Boolean addMore = in.nextLine().equalsIgnoreCase("Y") ? true : false;
         return addMore && !temp.isEmpty() ? addPremiumToppings(userToppings, menu, listNum, type, size, priceList,t) : t;
     }
+
     private boolean addRegularToppings(Menu menu, ArrayList<Topping> userToppings,int listNum,String type){
         System.out.println(String.format("%s\nSelect a %s type (enter the number next to the item):",type.toUpperCase(), type));
         ArrayList<Topping> temp = (ArrayList<Topping>) menu.m.get(listNum);
@@ -224,7 +225,7 @@ public class UserInterface {
                         writer.write(item.toString() + "\n");
                     }
                 }
-                writer.write(String.format("Total:%.2f",order.getRunningTotal()));
+                writer.write(String.format("Total:$%.2f",order.getRunningTotal()));
                 writer.close();
 
             } catch (Exception e) {

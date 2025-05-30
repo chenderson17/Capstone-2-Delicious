@@ -4,8 +4,4 @@ public class Cheese extends Topping{
         super(name,price);
     }
 
-    @Override
-    void setPrice(int size) {
-        price = Prices.cheesePrices[size];
-    }
 }
