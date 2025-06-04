@@ -1,6 +1,7 @@
 # Capstone-2-Delicious
 
-
+![ChatGPT Image](ChatGPT%20Image%20Jun%204,%202025,%2001_33_04%20PM.png)
+By: Caroline Henderson
 ## Project Description
 This project features a command line application that allows the user to purchase sandwiches,
 chips, and drinks.
